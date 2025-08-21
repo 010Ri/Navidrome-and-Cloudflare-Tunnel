@@ -1,0 +1,16 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    restart: unless-stopped
+    ports:
+      - "4533:4533"  # cloudflared がアクセス
+    volumes:
+      - ./data:/data
+      - /home/ubuntu/music:/music  # ~/music にmp3などを保存
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token YOUR_TOKEN
